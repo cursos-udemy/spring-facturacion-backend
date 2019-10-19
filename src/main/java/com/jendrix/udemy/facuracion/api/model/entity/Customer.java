@@ -31,20 +31,20 @@ public class Customer implements Serializable {
 	private Long id;
 
 	@NotEmpty
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	@NotEmpty
-	@Column(name = "lastname")
+	@Column(name = "lastname", nullable = false)
 	private String lastname;
 
 	@NotEmpty
 	@Email
-	@Column(name = "email")
+	@Column(name = "email", nullable = false)
 	private String email;
 
 	@NotNull
-	@Column(name = "created_at")
+	@Column(name = "created_at", nullable = false, unique = true)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -52,7 +52,7 @@ public class Customer implements Serializable {
 
 	@PrePersist
 	protected void prePersist() {
-		// this.createAt = new Date();
+		this.createdAt = new Date();
 	}
 
 	public Long getId() {
@@ -93,5 +93,5 @@ public class Customer implements Serializable {
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
-	}	
+	}
 }
