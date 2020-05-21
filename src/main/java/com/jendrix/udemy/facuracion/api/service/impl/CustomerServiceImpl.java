@@ -1,5 +1,7 @@
 package com.jendrix.udemy.facuracion.api.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	@Transactional(readOnly = false)
 	public Customer save(Customer customer) {
+		customer.setCreatedAt(new Date());
 		return this.customerRepository.save(customer);
 	}
 
