@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,17 +45,12 @@ public class Customer implements Serializable {
 	@Column(name = "email", nullable = false)
 	private String email;
 
-	//@NotNull
+	@NotNull
 	@Column(name = "created_at", nullable = false, unique = true)
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
 	private Date createdAt;
-
-	@PrePersist
-	protected void prePersist() {
-		this.createdAt = new Date();
-	}
+	
+	private String image;
 
 	public Long getId() {
 		return id;
@@ -95,4 +91,13 @@ public class Customer implements Serializable {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	public String getImage() {
+		return image;
+	}
+	
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
 }

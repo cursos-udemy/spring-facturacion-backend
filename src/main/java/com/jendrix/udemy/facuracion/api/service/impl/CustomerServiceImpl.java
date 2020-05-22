@@ -1,8 +1,8 @@
 package com.jendrix.udemy.facuracion.api.service.impl;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +24,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional(readOnly = true)
+	public Page<Customer> findAll(Pageable pageable) {
+		return this.customerRepository.findAll(pageable);
+	}	
+	
+	@Override
+	@Transactional(readOnly = true)
 	public Customer findById(Long id) {
 		return this.customerRepository.findById(id).orElse(null);
 	}
@@ -31,7 +37,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	@Transactional(readOnly = false)
 	public Customer save(Customer customer) {
-		customer.setCreatedAt(new Date());
 		return this.customerRepository.save(customer);
 	}
 
