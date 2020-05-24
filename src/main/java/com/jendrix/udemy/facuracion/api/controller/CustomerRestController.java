@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jendrix.udemy.facuracion.api.model.entity.Customer;
+import com.jendrix.udemy.facuracion.api.model.entity.Region;
 import com.jendrix.udemy.facuracion.api.service.CustomerService;
 
 @CrossOrigin(origins = { "${app.api.settings.cross-origin.urls}" })
@@ -118,6 +119,7 @@ public class CustomerRestController {
 			currentCustomer.setName(customer.getName());
 			currentCustomer.setLastname(customer.getLastname());
 			currentCustomer.setEmail(customer.getEmail());
+			currentCustomer.setRegion(customer.getRegion());
 
 			response.put("message", "Cliente actualizado con exito!");
 			response.put("customer", this.customerService.save(currentCustomer));
@@ -230,5 +232,11 @@ public class CustomerRestController {
 		header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	}
+
+	@GetMapping("/regions")
+	public Iterable<Region> getRegions() {
+		return this.customerService.findAllRegions();
+	}
+
 
 }

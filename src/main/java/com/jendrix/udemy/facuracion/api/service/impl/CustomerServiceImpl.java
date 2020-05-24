@@ -1,5 +1,7 @@
 package com.jendrix.udemy.facuracion.api.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jendrix.udemy.facuracion.api.model.entity.Customer;
+import com.jendrix.udemy.facuracion.api.model.entity.Region;
 import com.jendrix.udemy.facuracion.api.repository.CustomerRepository;
 import com.jendrix.udemy.facuracion.api.service.CustomerService;
 
@@ -44,5 +47,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional(readOnly = false)	
 	public void delete(Long id) {
 		this.customerRepository.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Region> findAllRegions() {
+		return this.customerRepository.findAllRegions();
 	}
 }
