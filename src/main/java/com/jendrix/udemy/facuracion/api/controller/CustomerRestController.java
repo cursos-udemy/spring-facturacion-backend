@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,6 +59,7 @@ public class CustomerRestController {
 		return this.customerService.findAll(PageRequest.of(page, limit));
 	}
 
+	@Secured({"ROLE_ADMIN","ROLE_USER"})	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findCustomerById(@PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
@@ -74,6 +76,7 @@ public class CustomerRestController {
 		}
 	}
 
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("")
 	public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
@@ -97,6 +100,7 @@ public class CustomerRestController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Customer customer, BindingResult result, @PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
@@ -132,6 +136,7 @@ public class CustomerRestController {
 		}
 	}
 
+	@Secured("ROLE_ADMIN")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
@@ -158,6 +163,7 @@ public class CustomerRestController {
 		}
 	}
 
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@PostMapping("/upload")
 	public ResponseEntity<?> upload(
 			@RequestParam("id") Long customerId,
@@ -237,6 +243,4 @@ public class CustomerRestController {
 	public Iterable<Region> getRegions() {
 		return this.customerService.findAllRegions();
 	}
-
-
 }
