@@ -16,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jendrix.udemy.facuracion.api.model.entity.User;
 import com.jendrix.udemy.facuracion.api.repository.UserRepository;
+import com.jendrix.udemy.facuracion.api.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -43,6 +44,12 @@ public class UserServiceImpl implements UserDetailsService {
 
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), user.getEnabled(), true, true, true,
 				authorities);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User findByUsername(String username) {
+		return this.userRepository.findByUsername(username);
 	}
 
 }
