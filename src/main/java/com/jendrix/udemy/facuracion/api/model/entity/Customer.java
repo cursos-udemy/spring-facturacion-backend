@@ -32,7 +32,7 @@ public class Customer implements Serializable {
 	private Long id;
 
 	@NotEmpty
-	@Size(min = 2, max = 10)
+	@Size(min = 2, max = 50)
 	@Column(name = "name", nullable = false)
 	private String name;
 
@@ -42,11 +42,11 @@ public class Customer implements Serializable {
 
 	@NotEmpty
 	@Email
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	@NotNull
-	@Column(name = "created_at", nullable = false, unique = true)
+	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date createdAt;
 	

@@ -124,7 +124,7 @@ public class CustomerRestController {
 			response.put("message", "Cliente actualizado con exito!");
 			response.put("customer", this.customerService.save(currentCustomer));
 
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.put("message", "Error al actualizar el cliente");
@@ -166,7 +166,7 @@ public class CustomerRestController {
 		try {
 			Customer customer = this.customerService.findById(customerId);
 
-			if (!image.isEmpty()) {
+			if (!image.isEmpty() && customer !=null) {
 				String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename().replace(" ", "");
 
 				Path filePath = Paths.get("uploads").resolve(filename).toAbsolutePath();
