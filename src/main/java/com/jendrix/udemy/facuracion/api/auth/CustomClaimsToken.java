@@ -25,10 +25,13 @@ public class CustomClaimsToken implements TokenEnhancer {
 		User user = this.userService.findByUsername(authentication.getName());
 		if (user != null) {
 			Map<String, Object> claims = new HashMap<>();
-			claims.put("username", user.getUsername());
+			claims.put("first_name", user.getName());
+			claims.put("last_name", user.getLastname());
+			claims.put("email", user.getEmail());
 
 			((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(claims);
 		}
+
 		return accessToken;
 	}
 

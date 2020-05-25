@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -31,6 +33,17 @@ public class User implements Serializable {
 
 	@Column(length = 60)
 	private String password;
+	
+	@Size(min = 2, max = 50)
+	@Column(name = "name", nullable = false)
+	private String name;
+
+	@Column(name = "lastname", nullable = false)
+	private String lastname;
+
+	@Email
+	@Column(unique = true, name = "email", nullable = false)
+	private String email;
 
 	private Boolean enabled;
 
@@ -77,5 +90,29 @@ public class User implements Serializable {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
