@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "regiones")
+@Table(name = "regions")
 public class Region implements Serializable{
 
 	private static final long serialVersionUID = 8663132220777271954L;

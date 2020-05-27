@@ -1,11 +1,11 @@
-INSERT INTO regiones (id, name) VALUES (1, 'Sudamérica');
-INSERT INTO regiones (id, name) VALUES (2, 'Centroamérica');
-INSERT INTO regiones (id, name) VALUES (3, 'Norteamérica');
-INSERT INTO regiones (id, name) VALUES (4, 'Europa');
-INSERT INTO regiones (id, name) VALUES (5, 'Asia');
-INSERT INTO regiones (id, name) VALUES (6, 'Africa');
-INSERT INTO regiones (id, name) VALUES (7, 'Oceanía');
-INSERT INTO regiones (id, name) VALUES (8, 'Antártida');
+INSERT INTO regions (id, name) VALUES (1, 'Sudamérica');
+INSERT INTO regions (id, name) VALUES (2, 'Centroamérica');
+INSERT INTO regions (id, name) VALUES (3, 'Norteamérica');
+INSERT INTO regions (id, name) VALUES (4, 'Europa');
+INSERT INTO regions (id, name) VALUES (5, 'Asia');
+INSERT INTO regions (id, name) VALUES (6, 'Africa');
+INSERT INTO regions (id, name) VALUES (7, 'Oceanía');
+INSERT INTO regions (id, name) VALUES (8, 'Antártida');
 
 insert into customer (id, region_id, name, lastname, email, created_at) values (1, 1, 'Willy', 'Fernandez', 'willy@gmail.com', '2019-09-07');
 insert into customer (id, region_id, name, lastname, email, created_at) values (2, 2, 'Agustina', 'Fernandez Girones', 'agus@gmail.com', '2019-09-06');
@@ -46,4 +46,22 @@ INSERT INTO roles (id, name) VALUES (2,'ROLE_ADMIN');
 INSERT INTO users_authorities (user_id, role_id) VALUES (1, 1);
 INSERT INTO users_authorities (user_id, role_id) VALUES (2, 2);
 INSERT INTO users_authorities (user_id, role_id) VALUES (2, 1);
+
+INSERT INTO item (id, name, price, created_at) VALUES(1, 'Panasonic Pantalla LCD', 259990, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(2, 'Sony Camara digital DSC-W320B', 123490, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(3, 'Apple iPod shuffle', 1499990, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(4, 'Sony Notebook Z110', 37990, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(5, 'Hewlett Packard Multifuncional F2280', 69990, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(6, 'Bianchi Bicicleta Aro 26', 69990, '2020-05-25');
+INSERT INTO item (id, name, price, created_at) VALUES(7, 'Mica Comoda 5 Cajones', 299990, '2020-05-25');
+
+INSERT INTO invoice (id, description, observation, customer_id, created_at) VALUES(1, 'Factura equipos de oficina', null, 1, '2020-05-25');
+
+INSERT INTO invoice_item (id, quantity, invoice_id, item_id) VALUES(1, 1, 1, 1);
+INSERT INTO invoice_item (id, quantity, invoice_id, item_id) VALUES(2, 2, 1, 4);
+INSERT INTO invoice_item (id, quantity, invoice_id, item_id) VALUES(3, 1, 1, 5);
+INSERT INTO invoice_item (id, quantity, invoice_id, item_id) VALUES(4, 1, 1, 7);
+
+INSERT INTO invoice (id, description, observation, customer_id, created_at) VALUES(2, 'Factura Bicicleta', 'Alguna nota importante!', 1, '2020-05-25');
+INSERT INTO invoice_item (id, quantity, invoice_id, item_id) VALUES(5, 3, 2, 6);
 

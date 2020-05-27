@@ -39,8 +39,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jendrix.udemy.facuracion.api.model.entity.Customer;
+import com.jendrix.udemy.facuracion.api.model.entity.Invoice;
 import com.jendrix.udemy.facuracion.api.model.entity.Region;
 import com.jendrix.udemy.facuracion.api.service.CustomerService;
+import com.jendrix.udemy.facuracion.api.service.InvoiceService;
 
 @CrossOrigin(origins = { "${app.api.settings.cross-origin.urls}" })
 @RestController
@@ -52,6 +54,9 @@ public class CustomerRestController {
 	@Autowired
 	private CustomerService customerService;
 
+	@Autowired
+	private InvoiceService invoiceService;
+
 	@GetMapping("")
 	public Iterable<Customer> getCustomers(
 			@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
@@ -59,7 +64,7 @@ public class CustomerRestController {
 		return this.customerService.findAll(PageRequest.of(page, limit));
 	}
 
-	@Secured({"ROLE_ADMIN","ROLE_USER"})	
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findCustomerById(@PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
@@ -76,7 +81,7 @@ public class CustomerRestController {
 		}
 	}
 
-	@Secured({"ROLE_ADMIN"})
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping("")
 	public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
@@ -163,7 +168,7 @@ public class CustomerRestController {
 		}
 	}
 
-	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
 	@PostMapping("/upload")
 	public ResponseEntity<?> upload(
 			@RequestParam("id") Long customerId,
@@ -172,7 +177,7 @@ public class CustomerRestController {
 		try {
 			Customer customer = this.customerService.findById(customerId);
 
-			if (!image.isEmpty() && customer !=null) {
+			if (!image.isEmpty() && customer != null) {
 				String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename().replace(" ", "");
 
 				Path filePath = Paths.get("uploads").resolve(filename).toAbsolutePath();
@@ -243,4 +248,14 @@ public class CustomerRestController {
 	public Iterable<Region> getRegions() {
 		return this.customerService.findAllRegions();
 	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_USER" })
+	@GetMapping("/{id}/invoices")
+	public Iterable<Invoice> getInvoices(
+			@PathVariable Long id,
+			@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") Integer limit) {
+		return this.invoiceService.findByCustomerId(id);
+	}
+
 }

@@ -19,8 +19,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name = "customer")
 public class Customer implements Serializable {
@@ -49,13 +47,13 @@ public class Customer implements Serializable {
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date createdAt;
-	
+
 	private String image;
-	
-	//@NotNull
+
+	// @NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "region_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+	//@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Region region;
 
 	public Long getId() {
@@ -97,19 +95,19 @@ public class Customer implements Serializable {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
 	public String getImage() {
 		return image;
 	}
-	
+
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
 	public Region getRegion() {
 		return region;
 	}
-	
+
 	public void setRegion(Region region) {
 		this.region = region;
 	}
