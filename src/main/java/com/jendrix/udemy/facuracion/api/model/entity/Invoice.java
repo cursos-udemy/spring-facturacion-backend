@@ -31,7 +31,7 @@ public class Invoice implements Serializable {
 
 	@Column(name = "created_at")
 	@Temporal(TemporalType.DATE)
-	private Date createdat;
+	private Date createdAt;
 
 	private String description;
 
@@ -57,12 +57,12 @@ public class Invoice implements Serializable {
 		this.id = id;
 	}
 
-	public Date getCreatedat() {
-		return createdat;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreatedat(Date createdat) {
-		this.createdat = createdat;
+	public void setCreatedat(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public String getDescription() {

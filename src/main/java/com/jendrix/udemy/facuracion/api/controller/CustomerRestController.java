@@ -19,14 +19,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +42,6 @@ import com.jendrix.udemy.facuracion.api.model.entity.Region;
 import com.jendrix.udemy.facuracion.api.service.CustomerService;
 import com.jendrix.udemy.facuracion.api.service.InvoiceService;
 
-@CrossOrigin(origins = { "${app.api.settings.cross-origin.urls}" })
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerRestController {
@@ -68,32 +65,27 @@ public class CustomerRestController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findCustomerById(@PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
-		try {
-			Customer customer = this.customerService.findById(id);
-			if (customer == null) {
-				response.put("message", "El cliente con ID ".concat(id.toString()).concat(" no existe"));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<Customer>(customer, HttpStatus.OK);
-		} catch (DataAccessException dae) {
-			response.put("message", "No se puedo consultar el cliente. Servicio no disponible");
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		Customer customer = this.customerService.findById(id);
+		if (customer == null) {
+			response.put("message", "El cliente con ID ".concat(id.toString()).concat(" no existe"));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<Customer>(customer, HttpStatus.OK);
 	}
 
 	@Secured({ "ROLE_ADMIN" })
 	@PostMapping("")
 	public ResponseEntity<?> create(@Valid @RequestBody Customer customer, BindingResult result) {
 		Map<String, Object> response = new HashMap<>();
+		if (result.hasErrors()) {
+			List<String> errors = result.getFieldErrors()
+					.stream()
+					.map(fe -> String.format("El campo %s %s", fe.getField(), fe.getDefaultMessage()))
+					.collect(Collectors.toList());
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
 		try {
-			if (result.hasErrors()) {
-				List<String> errors = result.getFieldErrors()
-						.stream()
-						.map(fe -> String.format("El campo %s %s", fe.getField(), fe.getDefaultMessage()))
-						.collect(Collectors.toList());
-				response.put("errors", errors);
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-			}
 			Customer newCustomer = this.customerService.save(customer);
 			response.put("message", "Cliente creado con exito!");
 			response.put("customer", newCustomer);
@@ -109,22 +101,22 @@ public class CustomerRestController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Customer customer, BindingResult result, @PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
+		if (result.hasErrors()) {
+			List<String> errors = result.getFieldErrors()
+					.stream()
+					.map(fe -> String.format("El campo %s %s", fe.getField(), fe.getDefaultMessage()))
+					.collect(Collectors.toList());
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+
+		Customer currentCustomer = this.customerService.findById(id);
+		if (currentCustomer == null) {
+			response.put("message", "El cliente con ID ".concat(id.toString()).concat(" no existe"));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		
 		try {
-			if (result.hasErrors()) {
-				List<String> errors = result.getFieldErrors()
-						.stream()
-						.map(fe -> String.format("El campo %s %s", fe.getField(), fe.getDefaultMessage()))
-						.collect(Collectors.toList());
-				response.put("errors", errors);
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-			}
-
-			Customer currentCustomer = this.customerService.findById(id);
-			if (currentCustomer == null) {
-				response.put("message", "El cliente con ID ".concat(id.toString()).concat(" no existe"));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-			}
-
 			currentCustomer.setName(customer.getName());
 			currentCustomer.setLastname(customer.getLastname());
 			currentCustomer.setEmail(customer.getEmail());
