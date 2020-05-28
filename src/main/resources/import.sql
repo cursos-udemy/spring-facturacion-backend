@@ -1,11 +1,11 @@
-INSERT INTO regions (id, name) VALUES (1, 'Sudamérica');
-INSERT INTO regions (id, name) VALUES (2, 'Centroamérica');
-INSERT INTO regions (id, name) VALUES (3, 'Norteamérica');
+INSERT INTO regions (id, name) VALUES (1, 'Sudamerica');
+INSERT INTO regions (id, name) VALUES (2, 'Centroamerica');
+INSERT INTO regions (id, name) VALUES (3, 'Norteamerica');
 INSERT INTO regions (id, name) VALUES (4, 'Europa');
 INSERT INTO regions (id, name) VALUES (5, 'Asia');
 INSERT INTO regions (id, name) VALUES (6, 'Africa');
-INSERT INTO regions (id, name) VALUES (7, 'Oceanía');
-INSERT INTO regions (id, name) VALUES (8, 'Antártida');
+INSERT INTO regions (id, name) VALUES (7, 'Oceania');
+INSERT INTO regions (id, name) VALUES (8, 'Antartida');
 
 insert into customer (id, region_id, name, lastname, email, created_at) values (1, 1, 'Willy', 'Fernandez', 'willy@gmail.com', '2019-09-07');
 insert into customer (id, region_id, name, lastname, email, created_at) values (2, 2, 'Agustina', 'Fernandez Girones', 'agus@gmail.com', '2019-09-06');

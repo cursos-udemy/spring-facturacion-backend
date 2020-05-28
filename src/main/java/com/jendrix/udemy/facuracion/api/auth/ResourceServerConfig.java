@@ -2,6 +2,7 @@ package com.jendrix.udemy.facuracion.api.auth;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+	@Value("${app.config.allowedOrigins}")
+	private String allowedOrigins;
+
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -34,8 +38,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
+		String[] origins = this.allowedOrigins.split(",");
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		configuration.setAllowedOrigins(Arrays.asList(origins));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
@@ -44,10 +49,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-	
+
 	@Bean
 	public FilterRegistrationBean<CorsFilter> corsFilter() {
-		final FilterRegistrationBean<CorsFilter> bean =  new FilterRegistrationBean<CorsFilter>(new CorsFilter(corsConfigurationSource()));
+		final FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(corsConfigurationSource()));
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}

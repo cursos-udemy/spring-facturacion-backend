@@ -3,6 +3,7 @@ package com.jendrix.udemy.facuracion.api.auth;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Autowired
 	private CustomClaimsToken customClaimsToken;
+	
+	@Value("${app.config.clientId}")
+	private String clientId;
+	
+	@Value("${app.config.clientSecret}")
+	private String clientSecret;
+
+	@Value("${app.config.signingKey}")
+	private String signingKey;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -41,8 +51,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-				.withClient("angular-app")
-				.secret(passwordEncoder.encode("12345"))
+				.withClient(this.clientId)
+				.secret(passwordEncoder.encode(this.clientSecret))
 				.scopes("write", "read")
 				.authorizedGrantTypes("password", "refresh_token")
 				.accessTokenValiditySeconds(3600)
@@ -69,10 +79,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public JwtAccessTokenConverter accessTokenConverter() {
 		final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
 		
-		//converter.setSigningKey("secret-key-temp");
+		converter.setSigningKey(this.signingKey);
 
-		converter.setSigningKey(PropertiesConfig.RSA_PRIVATE);
-		converter.setVerifierKey(PropertiesConfig.RSA_PUBLIC);
+		//converter.setSigningKey(PropertiesConfig.RSA_PRIVATE);
+		//converter.setVerifierKey(PropertiesConfig.RSA_PUBLIC);
 		
 	    return converter;
 	}
