@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "invoice")
@@ -33,10 +35,13 @@ public class Invoice implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createdAt;
 
+	@NotEmpty
 	private String description;
 
+	@Column(length = 500)
 	private String observation;
 
+	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

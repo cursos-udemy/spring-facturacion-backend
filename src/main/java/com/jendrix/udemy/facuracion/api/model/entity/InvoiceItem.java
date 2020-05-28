@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "invoice_item")
@@ -21,6 +23,8 @@ public class InvoiceItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
+	@Min(1)
 	private Integer quantity;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -34,7 +38,6 @@ public class InvoiceItem implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public Integer getQuantity() {
 		return quantity;

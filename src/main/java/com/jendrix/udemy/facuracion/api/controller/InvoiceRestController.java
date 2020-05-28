@@ -61,7 +61,6 @@ public class InvoiceRestController {
 		}
 
 		Invoice newInvoice = this.invoiceService.save(invoice);
-		response.put("message", "Factura creado con exito!");
 		response.put("invoice", newInvoice);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
